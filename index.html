@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>تجربة توعوية</title>
+<style>
+:root{--bg1:#cfe0ee;--bg2:#e8b25a;--card:#f3e6bd;--text:#3b2a14;--btn:#6b8e23;--btn2:#8a6a3d;--cash:#d9822b;--cell:#d8c593;--act:#f4e7b8;--safe:#8fc46a;--trap:#d9534f;--head:#5a4326}
+*{box-sizing:border-box;font-family:Tahoma,Arial,sans-serif}
+body{margin:0;background:linear-gradient(var(--bg1),var(--bg2));min-height:100vh;padding:12px 12px 80px;color:var(--text);display:flex;justify-content:center}
+.w{width:100%;max-width:480px}
+h1{text-align:center;margin:4px 0 10px;font-size:23px}
+.notice{background:linear-gradient(#9b2a2a,#6f1717);color:#fff;border-radius:12px;padding:12px;margin-bottom:10px;line-height:1.8;font-weight:bold;font-size:14px;white-space:pre-line;box-shadow:0 2px 6px #0004}
+.notice .fx{font-weight:normal;font-size:12px;color:#ffd54f;margin-top:4px}
+.banner{background:var(--head);color:#fff;border-radius:10px;padding:10px;margin-bottom:10px;text-align:center;white-space:pre-line}
+.card{background:var(--card);border-radius:14px;padding:12px;margin-bottom:10px;box-shadow:0 2px 6px #0003}
+input,button{font-size:16px;padding:11px;border-radius:10px;border:1px solid #7a6340}
+input[type=text],input[type=password],input[type=number]{width:100%;margin-bottom:8px}
+button{border:0;background:var(--btn);color:#fff;font-weight:bold;cursor:pointer}
+button.g{background:var(--btn2)}button.o{background:var(--cash)}
+button:disabled{opacity:.45}
+.row{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.idbar{background:#fff;color:#222;border:2px dashed #c9a24b;border-radius:14px;padding:8px;text-align:center;margin-bottom:10px;font-size:13px}
+.idbar b{display:block;font-size:30px;letter-spacing:3px;color:#8a2a2a}
+.sec{font-weight:bold;font-size:17px;margin:6px 0 8px}
+.gcard{display:flex;align-items:stretch;background:#3b2a14;border-radius:16px;overflow:hidden;margin-bottom:12px;box-shadow:0 3px 8px #0005;color:#fff;width:100%;padding:0;text-align:right}
+.gimg{width:112px;min-height:104px;display:flex;align-items:center;justify-content:center;font-size:54px;background-size:cover;background-position:center;flex-shrink:0}
+.gcard[data-g="g1"] .gimg{background-color:#2e7d32}
+.gcard[data-g="g2"] .gimg{background-color:#b8860b}
+.gcard[data-g="g3"] .gimg{background-color:#6a1b9a}
+.gtxt{flex:1;padding:12px}
+.gname{font-size:20px;font-weight:bold}
+.ginfo{font-size:12px;opacity:.88;margin-top:5px;line-height:1.7}
+.mult{width:78px;text-align:center;font-weight:bold;font-size:14px;line-height:1.3}
+.msm{font-size:11px;font-weight:normal;opacity:.8}
+.cell{flex:1;height:54px;background:var(--cell);border:2px solid #7a6340;color:#000;font-size:24px;border-radius:12px}
+.cell.act{background:var(--act);box-shadow:0 0 10px #c9a24b}
+.cell.wait{animation:pulse .5s infinite}
+.cell.safe{background:var(--safe);animation:popin .3s}.cell.trap{background:var(--trap);animation:popin .3s}
+.balbox{position:relative;background:linear-gradient(#3b3b3b,#222);color:#fff;border-radius:14px;padding:12px;text-align:center;margin-bottom:10px}
+.big{font-size:30px;font-weight:bold;color:#ffd54f}.sm{font-size:12px;opacity:.85}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:10px}
+.sbox{background:var(--card);border-radius:12px;padding:8px;text-align:center;font-size:12px;box-shadow:0 1px 4px #0003}
+.sbox b{display:block;font-size:17px}
+.msgbox{text-align:center;background:var(--head);color:#fff;border-radius:12px;padding:12px;margin-bottom:10px;line-height:1.7;white-space:pre-line;font-size:17px;font-weight:bold}
+.note{background:#fff3cd;color:#5a3b00;border-radius:10px;padding:8px;font-size:12px;text-align:center;margin-bottom:10px;line-height:1.7}
+.chips{display:flex;gap:6px;margin-bottom:8px}.chips button{flex:1;padding:7px;font-size:13px;background:var(--btn2)}
+.res{font-size:46px;text-align:center;margin:8px 0;min-height:64px}
+.res.spin{animation:spin 1.2s ease-in-out}
+.risk{font-size:13px;text-align:center;line-height:1.8;margin-bottom:8px;font-weight:bold}
+.hide{display:none!important}
+input[type=range]{width:100%;padding:0;margin:6px 0}
+#fatal{background:#b00;color:#fff;padding:10px;border-radius:8px;margin-bottom:8px;font-size:13px;direction:ltr;text-align:left}
+#aerr{color:#a00;font-weight:bold;margin-top:6px}
+.toast{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);max-width:92%;min-width:60%;padding:14px 18px;border-radius:14px;color:#fff;font-weight:bold;text-align:center;z-index:20;box-shadow:0 4px 14px #0007;white-space:pre-line;font-size:16px;background:#444}
+.ov{position:fixed;inset:0;background:#000a;display:flex;align-items:center;justify-content:center;z-index:30;padding:20px}
+.ovb{padding:28px 30px;border-radius:22px;text-align:center;color:#fff;min-width:75%;max-width:420px;white-space:pre-line;line-height:1.7}
+.ovb.w{background:linear-gradient(#22a447,#14692d);box-shadow:0 0 50px #4caf50;animation:popin .35s}
+.ovb.l{background:linear-gradient(#c62828,#7f1414);box-shadow:0 0 50px #e53935;animation:popin .35s,shake .5s .1s}
+.ovi{font-size:64px}.ova{font-size:42px;font-weight:bold;margin:4px 0}.ovt{font-size:16px}
+@keyframes spin{from{transform:rotateY(0)}to{transform:rotateY(1440deg)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-9px)}40%{transform:translateX(9px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
+@keyframes flashg{0%{box-shadow:0 0 0 0 #4caf50}50%{box-shadow:0 0 30px 8px #4caf50}100%{box-shadow:0 0 0 0 #4caf5000}}
+@keyframes flashr{0%{box-shadow:0 0 0 0 #e53935}50%{box-shadow:0 0 30px 8px #e53935}100%{box-shadow:0 0 0 0 #e5393500}}
+@keyframes floatup{0%{opacity:1;transform:translate(-50%,0)}100%{opacity:0;transform:translate(-50%,-70px)}}
+@keyframes popin{0%{transform:scale(.6)}60%{transform:scale(1.12)}100%{transform:scale(1)}}
+.balbox.fxw{animation:flashg .8s}
+.balbox.fxl{animation:shake .5s,flashr .8s}
+.floatamt{position:absolute;left:50%;top:35%;font-size:28px;font-weight:bold;pointer-events:none;animation:floatup 1s forwards}
+.floatamt.w{color:#7CFC00}.floatamt.l{color:#ff6b6b}
+</style></head>
+<body><div class="w">
+<div id="fatal" class="hide"></div>
+<h1 data-t="title"></h1>
+<div class="notice"><div data-t="notice"></div><div class="fx">🔒 الرصيد وهمي بالكامل ولا توجد أموال حقيقية.</div></div>
+<div class="banner hide" id="banner" data-t="banner"></div>
+
+<div id="auth" class="card hide">
+  <div class="row"><button id="t_login" style="flex:1" data-t="btnLogin"></button><button id="t_reg" style="flex:1" data-t="btnReg"></button></div>
+  <input type="text" id="u" data-ph="phUser" autocomplete="username">
+  <input type="password" id="p" data-ph="phPass" autocomplete="current-password">
+  <input type="password" id="p2" data-ph="phPass2" autocomplete="new-password" class="hide">
+  <button id="go" style="width:100%"></button>
+  <div id="aerr"></div>
+</div>
+
+<div id="main" class="hide">
+  <div class="idbar">🆔 رقم حسابك (ID)<b id="myid"></b><span id="myname"></span></div>
+  <div class="balbox" id="balbox"><div class="sm" data-t="lblBal"></div><div class="big" id="bal"></div></div>
+  <div class="grid3">
+    <div class="sbox"><b id="s1">0</b><span data-t="lblRounds"></span></div>
+    <div class="sbox"><b id="s2">0</b><span data-t="lblWins"></span></div>
+    <div class="sbox"><b id="s3">0</b><span data-t="lblLoss"></span></div>
+  </div>
+  <div class="grid2">
+    <div class="sbox"><b id="s4">0</b><span data-t="lblWager"></span></div>
+    <div class="sbox"><b id="s5">0</b><span data-t="lblNet"></span></div>
+  </div>
+  <div class="msgbox" id="msg"></div>
+  <div class="note hide" id="note"></div>
+
+  <div id="home">
+    <div class="sec">🎮 اختار لعبة</div>
+    <button class="gcard" data-g="g1"><div class="gimg" id="gi1"></div><div class="gtxt"><div class="gname" data-t="g1"></div><div class="ginfo" id="gf1"></div></div></button>
+    <button class="gcard" data-g="g2"><div class="gimg" id="gi2"></div><div class="gtxt"><div class="gname" data-t="g2"></div><div class="ginfo" id="gf2"></div></div></button>
+    <button class="gcard" data-g="g3"><div class="gimg" id="gi3"></div><div class="gtxt"><div class="gname" data-t="g3"></div><div class="ginfo" id="gf3"></div></div></button>
+  </div>
+
+  <div id="gv" class="hide">
+    <button class="g" id="back" style="width:100%;margin-bottom:8px">→ رجوع لقائمة الألعاب</button>
+    <div class="sec" id="gtitle"></div>
+    <div class="chips"><button data-b="100">100</button><button data-b="1000">1,000</button><button data-b="10000">10,000</button><button data-b="100000">100,000</button></div>
+    <input type="number" id="bet" min="1" placeholder="الرهان">
+
+    <div id="p_g1" class="hide">
+      <div class="risk" id="risk"></div>
+      <div class="card" id="board"></div>
+      <div class="row"><button id="start" style="flex:1" data-t="btnStart"></button><button id="cash" class="o" style="flex:1" disabled></button></div>
+    </div>
+    <div id="p_g2" class="hide">
+      <div class="card"><div class="res" id="coinres">🪙</div>
+        <div class="row"><button id="ch" style="flex:1">صورة</button><button id="ct" class="g" style="flex:1">كتابة</button></div>
+        <div class="sm" id="coininfo" style="text-align:center"></div></div>
+    </div>
+    <div id="p_g3" class="hide">
+      <div class="card"><div class="res" id="diceres">🎲</div>
+        <div class="row"><button id="du" style="flex:1">أقل من أو يساوي</button><button id="do" class="g" style="flex:1">أكبر من</button></div>
+        <div style="text-align:center;font-weight:bold">الرقم: <span id="tgv">50</span></div>
+        <input type="range" id="tg" min="5" max="95" value="50">
+        <div class="sm" id="diceinfo" style="text-align:center;margin-bottom:8px"></div>
+        <button id="roll" style="width:100%">ارمي</button></div>
+    </div>
+  </div>
+  <button class="g" id="out" style="width:100%;margin-top:8px" data-t="btnOut"></button>
+</div>
+</div>
+<div id="toast" class="toast hide"></div>
+<div id="ov" class="ov hide"><div class="ovb" id="ovb"><div class="ovi" id="ovi"></div><div class="ova" id="ova"></div><div class="ovt" id="ovt"></div></div></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<script>
+window.onerror=function(m,s,l){var e=document.getElementById("fatal");e.textContent="ERROR: "+m+" (line "+l+")";e.classList.remove("hide");};
+firebase.initializeApp({
+  apiKey:"AIzaSyC0WWJQgh4lEYbOqfKFMcI1vLgwJS5DwCQ",
+  authDomain:"xtra-f3087.firebaseapp.com",
+  databaseURL:"https://xtra-f3087-default-rtdb.firebaseio.com",
+  projectId:"xtra-f3087",
+  storageBucket:"xtra-f3087.firebasestorage.app",
+  messagingSenderId:"122881932496",
+  appId:"1:122881932496:web:cf63664e63e38176d332d5"
+});
+const DB=firebase.database();
+const $=id=>document.getElementById(id);
+const nd=s=>String(s==null?"":s).replace(/[٠-٩]/g,d=>d.charCodeAt(0)-1632).replace(/[۰-۹]/g,d=>d.charCodeAt(0)-1776);
+const f=n=>Number(n).toLocaleString("en",{maximumFractionDigits:2});
+const r2=n=>Math.round(n*100)/100;
+const r1=n=>Math.round(n*10)/10;
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const rnd=()=>crypto.getRandomValues(new Uint32Array(1))[0]/4294967296;
+const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e;};
+const lines=s=>String(s||"").split("\n").map(x=>x.trim()).filter(Boolean);
+const rndLine=s=>{const a=lines(s);return a.length?a[Math.floor(rnd()*a.length)]:"";};
+const SESS="ws_sess2",EMO={1:"🪜",2:"🪙",3:"🎲"};
+
+const DEF={
+texts:{
+title:"ركن الغرب",
+notice:"⚠️ المراهنات خطر حقيقي على الفرد والمجتمع. هذه تجربة توعوية: الألعاب مضبوطة لصالح المنصة كما في المنصات الحقيقية.",
+banner:"",
+g1:"سلّم الغرب",g2:"قلب العملة",g3:"النرد",img1:"",img2:"",img3:"",
+lblBal:"الرصيد (وهمي)",lblRounds:"جولات",lblWins:"كسب",lblLoss:"خسر",lblWager:"إجمالي ما راهنت به",lblNet:"خسارتك الصافية",
+msgStart:"اختار لعبة وحط رهانك",msgFirst:"اختار خانة في الصف الأول",msgNext:"كمّل أو اسحب",
+msgLost:"خسرت {amount}",msgWin:"كسبت {amount} 🎉",msgCash:"سحبت {amount}",
+noBal:"الرصيد مش كفاية",closedMsg:"هذا الحساب مغلق",regClosed:"التسجيل مغلق حاليًا",
+btnStart:"ابدأ",btnCash:"اسحب",btnLogin:"دخول",btnReg:"حساب جديد",btnOut:"خروج",
+phUser:"اسم المستخدم (حروف إنجليزي أو أرقام)",phPass:"كلمة السر (6 أحرف على الأقل)",phPass2:"أعد كتابة كلمة السر"},
+colors:{bg1:"#cfe0ee",bg2:"#e8b25a",card:"#f3e6bd",text:"#3b2a14",btn:"#6b8e23",btn2:"#8a6a3d",cash:"#d9822b",cell:"#d8c593",act:"#f4e7b8",safe:"#8fc46a",trap:"#d9534f",head:"#5a4326"},
+settings:{initial:100000,newZero:false,registration:true,minBet:1,maxBet:0,defBet:1000,rtp:96,rows:6,g1on:true,g2on:true,g3on:true,fx:true}
+};
+let C=JSON.parse(JSON.stringify(DEF));
+function merge(c){
+  c=c||{};
+  const t=Object.assign({},DEF.texts,c.texts||{});
+  if(!String(t.notice||"").trim())t.notice=DEF.texts.notice;
+  C={texts:t,colors:Object.assign({},DEF.colors,c.colors||{}),settings:Object.assign({},DEF.settings,c.settings||{})};
+}
+let U=null,name=null,ref=null,view="home",lastLoss=null,dmode="under",betSet=false,authMode="login",toastT=null,ovT=null,busy=false,hold=false;
+const MODE=2;
+const rowsN=()=>Math.max(3,Math.min(10,Math.floor(C.settings.rows)||6));
+const scU=()=>U?(U.scale||100)/100:1;
+function tpl(s,amt){
+  const u=U||{},net=(u.returned||0)-(u.wagered||0);
+  return String(s||"").replace(/\{name\}/g,name||"").replace(/\{amount\}/g,amt==null?"":f(amt))
+    .replace(/\{rounds\}/g,u.rounds||0).replace(/\{losses\}/g,u.losses||0).replace(/\{wins\}/g,u.wins||0).replace(/\{net\}/g,f(Math.abs(net)));
+}
+function setAuthMode(m){
+  authMode=m;
+  $("p2").classList.toggle("hide",m!=="reg");
+  $("t_login").className=m==="login"?"":"g";$("t_reg").className=m==="reg"?"":"g";
+  $("go").textContent=m==="reg"?C.texts.btnReg:C.texts.btnLogin;
+  $("p").autocomplete=m==="reg"?"new-password":"current-password";
+}
+function applyCfg(){
+  for(const k in C.colors)document.documentElement.style.setProperty("--"+k,C.colors[k]);
+  document.querySelectorAll("[data-t]").forEach(e=>{e.textContent=tpl(C.texts[e.dataset.t]);});
+  document.querySelectorAll("[data-ph]").forEach(e=>{e.placeholder=C.texts[e.dataset.ph]||"";});
+  [1,2,3].forEach(n=>{
+    const e=$("gi"+n),u=String(C.texts["img"+n]||"").trim();
+    if(/^https?:\/\//i.test(u)){e.style.backgroundImage='url("'+u.replace(/["()\s]/g,"")+'")';e.textContent="";}
+    else{e.style.backgroundImage="";e.textContent=EMO[n];}
+  });
+  $("banner").classList.toggle("hide",!String(C.texts.banner).trim());
+  document.title=C.texts.title;
+  if(!betSet){$("bet").value=C.settings.defBet;betSet=true;}
+  setAuthMode(authMode);
+}
+function toast(t){const e=$("toast");e.textContent=t;e.classList.remove("hide");clearTimeout(toastT);toastT=setTimeout(()=>e.classList.add("hide"),3000);}
+const msg=(t,err)=>{$("msg").textContent=t;if(err)toast(t);};
+const show=n=>{$("auth").classList.toggle("hide",n!=="auth");$("main").classList.toggle("hide",n!=="main");};
+function overlay(win,amt,text){
+  $("ovb").className="ovb "+(win?"w":"l");
+  $("ovi").textContent=win?"💰":"💥";
+  $("ova").textContent=(win?"+":"-")+f(amt);
+  $("ovt").textContent=text+"\nالرصيد الآن: "+f(U?U.balance:0);
+  $("ov").classList.remove("hide");clearTimeout(ovT);ovT=setTimeout(()=>$("ov").classList.add("hide"),2400);
+}
+$("ov").onclick=()=>{clearTimeout(ovT);$("ov").classList.add("hide");};
+async function hash(n,p){
+  const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode("ws2:"+n+":"+p));
+  return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("");
+}
+async function newId(n){
+  for(let i=0;i<40;i++){
+    const id=String(100000000+Math.floor(rnd()*900000000));
+    const t=await DB.ref("ids/"+id).transaction(c=>c===null?n:undefined);
+    if(t.committed)return id;
+  }
+  throw new Error("id");
+}
+const lmult=(m,k)=>r2(C.settings.rtp/100*Math.pow(m/(m-1),k));
+
+function fx(win,amt){
+  if(!C.settings.fx)return;
+  const b=$("balbox");b.classList.remove("fxw","fxl");void b.offsetWidth;b.classList.add(win?"fxw":"fxl");
+  const s=el("div","floatamt "+(win?"w":"l"),(win?"+":"-")+f(amt));b.appendChild(s);setTimeout(()=>s.remove(),1000);
+  if(!win&&navigator.vibrate)navigator.vibrate(120);
+}
+
+/* ---------- العرض ---------- */
+function cards(){
+  const sc=scU(),rt=C.settings.rtp,R=rowsN();
+  $("gf1").textContent="سلّم من "+R+" صفوف • فرصة النجاة "+r1(50*sc)+"% في كل صف • حتى ×"+lmult(2,R)+(U.game?" • ⏳ عندك جولة شغالة":"");
+  $("gf2").textContent="صورة أو كتابة • فرصة الفوز "+r1(50*sc)+"% • مضاعف ×"+r2(rt/100*2);
+  $("gf3").textContent="اختار الرقم بنفسك • حتى ×"+r2(rt/100/0.05)+" • كل ما الفرصة قلّت المضاعف زاد";
+  const n=$("note");n.classList.toggle("hide",sc>=1);
+  n.textContent="ℹ️ فرصة الفوز على حسابك مخفّضة بقرار المشرف ("+Math.round((1-sc)*100)+"% خسارة إضافية).";
+}
+function drawLadder(){
+  const g=U.game,m=g?g.mode:(lastLoss?lastLoss.mode:MODE),R=g?(g.rows||6):(lastLoss?lastLoss.rows:rowsN()),b=$("board");b.innerHTML="";
+  const bet=g?g.bet:(r2(parseFloat(nd($("bet").value)))||0);
+  const surv=r1((m-1)/m*100*scU());
+  $("risk").textContent=g
+    ?"⚠️ لو غلطت تخسر "+f(g.bet)+" | لو نجحت تكسب "+f(g.bet*lmult(m,g.level+1))+(g.level>=1?" | لو سحبت الآن تاخد "+f(g.bet*lmult(m,g.level)):"")
+    :"فرصة النجاة في كل صف "+surv+"% | غلطة واحدة وتخسر رهانك كله";
+  for(let r=R-1;r>=0;r--){
+    const row=el("div","row"),ml=el("div","mult");
+    ml.appendChild(el("div","","×"+lmult(m,r+1)));ml.appendChild(el("div","msm",f(bet*lmult(m,r+1))));
+    row.appendChild(ml);
+    for(let c=0;c<m;c++){
+      const x=el("button","cell","؟");x.disabled=true;x.dataset.c=c;
+      if(g){
+        if(r<g.level){x.classList.add("safe");x.textContent="✔";}
+        if(r===g.level){x.disabled=false;x.classList.add("act");x.onclick=()=>lpick(c);}
+      }else if(lastLoss){
+        if(r<lastLoss.row){x.classList.add("safe");x.textContent="✔";}
+        if(r===lastLoss.row&&c===lastLoss.col){x.classList.add("trap");x.textContent="💣";}
+      }
+      row.appendChild(x);
+    }
+    b.appendChild(row);
+  }
+}
+const dicePct=()=>{const t=+$("tg").value;return dmode==="over"?100-t:t;};
+function updDice(){
+  $("tgv").textContent=$("tg").value;
+  const p=dicePct()/100,bet=r2(parseFloat(nd($("bet").value)))||0,m=r2(C.settings.rtp/100/p);
+  $("diceinfo").textContent="فرصة الفوز "+r1(dicePct()*scU())+"% | المضاعف ×"+m+" | الربح "+f(bet*m)+" | لو خسرت تخسر "+f(bet);
+  $("du").className=dmode==="under"?"":"g";$("do").className=dmode==="over"?"":"g";
+}
+function updCoin(){
+  const bet=r2(parseFloat(nd($("bet").value)))||0,m=r2(C.settings.rtp/100*2);
+  $("coininfo").textContent="المضاعف ×"+m+" | الربح "+f(bet*m)+" | فرصة الفوز "+r1(50*scU())+"% | لو خسرت تخسر "+f(bet);
+}
+function render(){
+  applyCfg();
+  $("myid").textContent=U.id||"—";$("myname").textContent=name;
+  $("bal").textContent=f(U.balance);
+  $("s1").textContent=U.rounds||0;$("s2").textContent=U.wins||0;$("s3").textContent=U.losses||0;
+  $("s4").textContent=f(U.wagered||0);$("s5").textContent=f(Math.max(0,(U.wagered||0)-(U.returned||0)));
+  const on=g=>C.settings[g+"on"]!==false;
+  if(view!=="home"&&!on(view))view="home";
+  ["g1","g2","g3"].forEach(g=>{
+    document.querySelector('.gcard[data-g="'+g+'"]').classList.toggle("hide",!on(g));
+    $("p_"+g).classList.toggle("hide",g!==view);
+  });
+  $("home").classList.toggle("hide",view!=="home");
+  $("gv").classList.toggle("hide",view==="home");
+  $("gtitle").textContent=view==="home"?"":C.texts[view];
+  cards();
+  const pl=!!U.game;
+  $("start").disabled=pl;
+  const can=pl&&U.game.level>=1;
+  $("cash").disabled=!can;
+  $("cash").textContent=can?C.texts.btnCash+" "+f(U.game.bet*lmult(U.game.mode,U.game.level)):C.texts.btnCash;
+  if(!$("msg").textContent)msg(tpl(C.texts.msgStart));
+  drawLadder();updDice();updCoin();
+}
+function release(){hold=false;busy=false;if(U)render();}
+
+/* ---------- منطق اللعب ---------- */
+async function run(fn){
+  let out={};
+  const res=await ref.transaction(u=>{
+    if(!u)return u;
+    out={};
+    if(u.closed){out.err=C.texts.closedMsg;return;}
+    try{return fn(u,out);}catch(e){out.err=e.message;return;}
+  });
+  if(!res.committed)return {err:out.err||"حصلت مشكلة، جرّب تاني"};
+  return out;
+}
+function chkBet(u,bet){
+  if(!(bet>=C.settings.minBet))throw new Error("اكتب رهان صحيح (على الأقل "+C.settings.minBet+")");
+  if(C.settings.maxBet>0&&bet>C.settings.maxBet)throw new Error("أقصى رهان "+f(C.settings.maxBet));
+  if(bet>u.balance)throw new Error(C.texts.noBal);
+}
+function fin(u,win){
+  u.game=null;u.rounds=(u.rounds||0)+1;
+  if(win>0)u.wins=(u.wins||0)+1;else u.losses=(u.losses||0)+1;
+  u.returned=r2((u.returned||0)+win);u.balance=r2(u.balance+win);u.last=Date.now();
+}
+function inst(u,bet,win){
+  u.balance=r2(u.balance-bet+win);u.wagered=r2((u.wagered||0)+bet);
+  u.returned=r2((u.returned||0)+win);u.rounds=(u.rounds||0)+1;
+  if(win>0)u.wins=(u.wins||0)+1;else u.losses=(u.losses||0)+1;u.last=Date.now();
+}
+const sc=u=>(u.scale||100)/100;
+const getBet=()=>r2(parseFloat(nd($("bet").value)));
+
+async function lstart(){
+  if(busy)return;
+  const bet=getBet();
+  const o=await run(u=>{chkBet(u,bet);if(u.game)throw new Error("عندك جولة شغالة");
+    u.balance=r2(u.balance-bet);u.wagered=r2((u.wagered||0)+bet);u.last=Date.now();u.game={bet:bet,mode:MODE,level:0,rows:rowsN()};return u;});
+  if(o.err)return msg(o.err,true);
+  lastLoss=null;msg(tpl(C.texts.msgFirst));
+}
+async function lpick(c){
+  if(busy)return;busy=true;hold=true;
+  const cellEl=document.querySelector('#board .cell.act[data-c="'+c+'"]');
+  if(cellEl){cellEl.textContent="⏳";cellEl.classList.add("wait");}
+  document.querySelectorAll("#board .cell").forEach(x=>x.disabled=true);
+  $("cash").disabled=true;
+  const r=rnd();
+  const pr=run((u,o)=>{
+    const g=u.game;if(!g)throw new Error("مفيش جولة شغالة");
+    const m=g.mode,row=g.level,R=g.rows||6;
+    if(r>=(m-1)/m*sc(u)){o.lost={row:row,col:c,mode:m,rows:R};o.bet=g.bet;fin(u,0);return u;}
+    g.level++;
+    if(g.level>=R){const w=r2(g.bet*lmult(m,g.level));fin(u,w);o.won=w;}
+    return u;});
+  const res=await Promise.all([pr,sleep(900)]);const o=res[0];
+  if(o.err){release();return msg(o.err,true);}
+  if(o.lost){
+    lastLoss=o.lost;const t=tpl(rndLine(C.texts.msgLost),o.bet);msg(t);release();overlay(false,o.bet,t);fx(false,o.bet);
+  }else if(o.won){
+    lastLoss=null;const t=tpl(C.texts.msgWin,o.won);msg(t);release();overlay(true,o.won,t);fx(true,o.won);
+  }else{msg(tpl(C.texts.msgNext));release();}
+}
+async function lcash(){
+  if(busy)return;busy=true;
+  const o=await run((u,o)=>{
+    const g=u.game;if(!g||g.level<1)throw new Error("مينفعش تسحب دلوقتي");
+    const w=r2(g.bet*lmult(g.mode,g.level));fin(u,w);o.won=w;return u;});
+  busy=false;
+  if(o.err)return msg(o.err,true);
+  lastLoss=null;const t=tpl(C.texts.msgCash,o.won);msg(t);overlay(true,o.won,t);fx(true,o.won);
+}
+function outcome(win,bet){
+  if(win>0){const t=tpl(C.texts.msgWin,win);msg(t);overlay(true,win,t);fx(true,win);}
+  else{const t=tpl(rndLine(C.texts.msgLost),bet);msg(t);overlay(false,bet,t);fx(false,bet);}
+}
+async function coin(side){
+  if(busy)return;
+  const bet=getBet(),r=rnd();
+  try{chkBet(U,bet);}catch(e){return msg(e.message,true);}
+  busy=true;hold=true;
+  const ce=$("coinres");ce.textContent="🪙";ce.classList.remove("spin");void ce.offsetWidth;ce.classList.add("spin");
+  const pr=run((u,o)=>{
+    chkBet(u,bet);
+    const won=r<0.5*sc(u);
+    o.res=won?side:(side==="h"?"t":"h");
+    o.win=won?r2(bet*C.settings.rtp/100*2):0;
+    inst(u,bet,o.win);return u;});
+  const res=await Promise.all([pr,sleep(1300)]);const o=res[0];
+  ce.classList.remove("spin");
+  if(o.err){release();return msg(o.err,true);}
+  ce.textContent=o.res==="h"?"🪙 صورة":"🪙 كتابة";
+  release();outcome(o.win,bet);
+}
+async function dice(){
+  if(busy)return;
+  const bet=getBet(),t=+$("tg").value,over=dmode==="over",r=rnd(),rr=rnd();
+  try{chkBet(U,bet);}catch(e){return msg(e.message,true);}
+  busy=true;hold=true;
+  const p=(over?100-t:t)/100;
+  const iv=setInterval(()=>{$("diceres").textContent="🎲 "+(1+Math.floor(Math.random()*100));},70);
+  const pr=run((u,o)=>{
+    chkBet(u,bet);
+    const won=r<p*sc(u);
+    const lo=won?(over?t+1:1):(over?1:t+1),hi=won?(over?100:t):(over?t:100);
+    o.roll=lo+Math.floor(rr*(hi-lo+1));
+    o.win=won?r2(bet*C.settings.rtp/100/p):0;
+    inst(u,bet,o.win);return u;});
+  const res=await Promise.all([pr,sleep(1300)]);const o=res[0];
+  clearInterval(iv);
+  if(o.err){release();return msg(o.err,true);}
+  $("diceres").textContent="🎲 "+o.roll;
+  release();outcome(o.win,bet);
+}
+
+/* ---------- الحسابات ---------- */
+function attach(n,h){
+  name=n;ref=DB.ref("users/"+n);
+  ref.on("value",s=>{
+    const u=s.val();
+    if(!u||u.pw!==h){logout("سجّل دخول من جديد");return;}
+    if(u.closed){logout(C.texts.closedMsg);return;}
+    U=u;
+    if(hold)return;
+    show("main");render();
+  });
+}
+function logout(t){
+  if(ref)ref.off();ref=null;U=null;name=null;lastLoss=null;hold=false;busy=false;view="home";
+  localStorage.removeItem(SESS);$("msg").textContent="";
+  show("auth");$("aerr").textContent=t||"";applyCfg();
+}
+async function auth(){
+  const reg=authMode==="reg",n=$("u").value.trim().toLowerCase(),p=$("p").value,err=t=>$("aerr").textContent=t;
+  if(!/^[a-z0-9_]{3,20}$/.test(n))return err("اسم المستخدم من 3 إلى 20 حرف إنجليزي أو أرقام أو _ بدون مسافات");
+  if(p.length<6)return err("كلمة السر 6 أحرف على الأقل");
+  if(reg){
+    if(p===n)return err("كلمة السر لازم تختلف عن اسم المستخدم");
+    if(p!==$("p2").value)return err("كلمتا السر غير متطابقتين");
+  }
+  err("...");
+  const h=await hash(n,p),r=DB.ref("users/"+n),snap=await r.get();
+  if(reg){
+    if(!C.settings.registration)return err(C.texts.regClosed);
+    if(snap.exists())return err("اسم المستخدم مستخدم، اختار اسم تاني");
+    let id;try{id=await newId(n);}catch(e){return err("حصلت مشكلة، جرّب تاني");}
+    const s0=C.settings.newZero?0:Number(C.settings.initial);
+    await r.set({id:id,pw:h,balance:s0,regBonus:s0,rounds:0,wins:0,losses:0,wagered:0,returned:0,closed:false,created:Date.now(),last:0});
+  }else{
+    const u=snap.val();
+    if(!u||u.pw!==h)return err("اسم المستخدم أو كلمة السر غلط");
+    if(u.closed)return err(C.texts.closedMsg);
+  }
+  err("");$("p").value="";$("p2").value="";view="home";
+  localStorage.setItem(SESS,JSON.stringify({n:n,h:h}));
+  attach(n,h);
+}
+
+/* ---------- التشغيل ---------- */
+$("t_login").onclick=()=>{setAuthMode("login");$("aerr").textContent="";};
+$("t_reg").onclick=()=>{setAuthMode("reg");$("aerr").textContent="";};
+$("go").onclick=auth;
+$("p").onkeydown=$("p2").onkeydown=e=>{if(e.key==="Enter")auth();};
+$("out").onclick=()=>logout();
+$("back").onclick=()=>{if(busy)return;view="home";if(U)render();};
+document.querySelectorAll(".gcard").forEach(b=>b.onclick=()=>{view=b.dataset.g;if(U){render();window.scrollTo(0,0);}});
+$("start").onclick=lstart;$("cash").onclick=lcash;
+$("ch").onclick=()=>coin("h");$("ct").onclick=()=>coin("t");$("roll").onclick=dice;
+$("tg").oninput=updDice;
+$("du").onclick=()=>{dmode="under";updDice();};$("do").onclick=()=>{dmode="over";updDice();};
+$("bet").oninput=()=>{if(U){if(!U.game&&!busy)drawLadder();updDice();updCoin();}};
+document.querySelectorAll("[data-b]").forEach(b=>b.onclick=()=>{$("bet").value=b.dataset.b;if(U){if(!U.game&&!busy)drawLadder();updDice();updCoin();}});
+DB.ref("config").on("value",s=>{merge(s.val());applyCfg();if(U&&!hold)render();});
+applyCfg();
+try{
+  const sv=JSON.parse(localStorage.getItem(SESS));
+  if(sv&&sv.n&&sv.h)attach(sv.n,sv.h);else show("auth");
+}catch(e){show("auth");}
+</script></body></html>
+<!-- END -->
